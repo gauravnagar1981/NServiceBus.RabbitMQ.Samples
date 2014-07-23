@@ -4,6 +4,7 @@
     using System.Threading;
     using NServiceBus;
     using NServiceBus.MessageMutator;
+    using NServiceBus.Unicast.Messages;
 
     public class DebugFlagMutator : IMutateTransportMessages, INeedInitialization
     {
@@ -22,14 +23,14 @@
             }
         }
 
-        public void MutateOutgoing(object[] messages, TransportMessage transportMessage)
+        public void MutateOutgoing(LogicalMessage logicalMessage, TransportMessage transportMessage)
         {
             transportMessage.Headers["Debug"] = Debug.ToString();
         }
 
-        public void Init()
+        public void Init(Configure config)
         {
-            Configure.Instance.Configurer.ConfigureComponent<DebugFlagMutator>(DependencyLifecycle.InstancePerCall);
+            config.Configurer.ConfigureComponent<DebugFlagMutator>(DependencyLifecycle.InstancePerCall);
         }
 
         static readonly ThreadLocal<bool> debug = new ThreadLocal<bool>();

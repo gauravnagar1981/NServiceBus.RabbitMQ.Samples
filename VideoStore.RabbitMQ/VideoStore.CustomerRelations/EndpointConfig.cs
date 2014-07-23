@@ -1,20 +1,13 @@
 namespace VideoStore.CustomerRelations
 {
-    using System;
     using NServiceBus;
 
-    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, UsingTransport<RabbitMQ> { }
-
-    public class MyClass : IWantToRunWhenBusStartsAndStops
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, UsingTransport<RabbitMQ>
     {
-        public void Start()
+        public void Customize(ConfigurationBuilder builder)
         {
-            Console.Out.WriteLine("The VideoStore.CustomerRelations endpoint is now started and subscribed to events from VideoStore.Sales");
-        }
-
-        public void Stop()
-        {
-
+            builder.Conventions(UnobtrusiveMessageConventions.Init);
         }
     }
+
 }
