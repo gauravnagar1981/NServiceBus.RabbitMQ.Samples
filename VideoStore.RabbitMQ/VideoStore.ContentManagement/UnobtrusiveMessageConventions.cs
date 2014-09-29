@@ -4,7 +4,7 @@
 
     static class UnobtrusiveMessageConventions
     {
-        public static void Init(Configure.ConventionsBuilder conventionsBuilder)
+        public static void Init(ConventionsBuilder conventionsBuilder)
         {
             conventionsBuilder
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("VideoStore") && t.Namespace.EndsWith("Commands"))

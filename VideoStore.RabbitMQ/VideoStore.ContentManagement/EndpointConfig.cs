@@ -1,12 +1,17 @@
+using NServiceBus.Features;
+
 namespace VideoStore.ContentManagement
 {
     using NServiceBus;
 
-    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, UsingTransport<RabbitMQ>
+    public class EndpointConfig : IConfigureThisEndpoint
     {
-        public void Customize(ConfigurationBuilder builder)
+        public void Customize(BusConfiguration configuration)
         {
-            builder.Conventions(UnobtrusiveMessageConventions.Init);
+            configuration.UseTransport<RabbitMQTransport>();
+            configuration.UsePersistence<InMemoryPersistence>();
+            configuration.RijndaelEncryptionService();
+            UnobtrusiveMessageConventions.Init(configuration.Conventions());
         }
     }
 }

@@ -2,16 +2,14 @@ namespace VideoStore.Sales
 {
     using NServiceBus;
 
-    public class EndpointConfig : IConfigureThisEndpoint, AsA_Publisher, UsingTransport<RabbitMQ>
+    public class EndpointConfig : IConfigureThisEndpoint
     {
-        public void Customize(ConfigurationBuilder builder)
+        public void Customize(BusConfiguration configuration)
         {
-            builder.Conventions(UnobtrusiveMessageConventions.Init);
-        }
-
-        public void Init(Configure config)
-        {
-            config.RijndaelEncryptionService();
+            configuration.UseTransport<RabbitMQTransport>();
+            configuration.UsePersistence<InMemoryPersistence>();
+            configuration.RijndaelEncryptionService();
+            UnobtrusiveMessageConventions.Init(configuration.Conventions());
         }
     }
 

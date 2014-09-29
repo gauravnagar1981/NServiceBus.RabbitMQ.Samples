@@ -11,13 +11,19 @@ namespace VideoStore.ECommerce
 
         protected void Application_Start()
         {
-            var configure = Configure.With(builder => builder.Conventions(UnobtrusiveMessageConventions.Init))
-                .UseTransport<RabbitMQ>()
-                .PurgeOnStartup(true)
-                .RijndaelEncryptionService()
-                .EnableInstallers();
-            var startableBus = configure.CreateBus();
-            Bus = startableBus.Start();
+            var configuration = new BusConfiguration();
+
+            UnobtrusiveMessageConventions.Init(configuration.Conventions());
+
+            configuration.UseTransport<RabbitMQTransport>();
+
+            configuration.UsePersistence<InMemoryPersistence>();
+
+            configuration.PurgeOnStartup(true);
+            configuration.RijndaelEncryptionService();
+            configuration.EnableInstallers();
+
+            Bus = NServiceBus.Bus.Create(configuration).Start();
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

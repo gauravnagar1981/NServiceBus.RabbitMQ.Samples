@@ -28,11 +28,12 @@
             transportMessage.Headers["Debug"] = Debug.ToString();
         }
 
-        public void Init(Configure config)
+        public void Customize(BusConfiguration configuration)
         {
-            config.Configurer.ConfigureComponent<DebugFlagMutator>(DependencyLifecycle.InstancePerCall);
+            configuration.RegisterComponents(c=>c.ConfigureComponent<DebugFlagMutator>(DependencyLifecycle.InstancePerCall));    
         }
 
         static readonly ThreadLocal<bool> debug = new ThreadLocal<bool>();
+        
     }
 }
