@@ -23,7 +23,7 @@
                 {
                     OrderNumber = message.OrderNumber,
                     VideoIds = message.VideoIds,
-                    //ClientId = message.ClientId
+                    ClientId = message.ClientId
                 });
         }
     }
